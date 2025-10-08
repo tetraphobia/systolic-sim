@@ -13,8 +13,10 @@ pub const Receiver = struct {
     rs1_out: u32,
 
     sender: *Sender,
-    pub fn create(sender: *Sender) *Receiver {
-        var receiver = Receiver{
+    pub fn create(allocator: std.mem.Allocator, sender: *Sender) !*Receiver {
+        const receiver = try allocator.create(Receiver);
+
+        receiver.* = Receiver{
             .full = false,
             .passthrough = false,
             .sender = sender,
@@ -24,6 +26,6 @@ pub const Receiver = struct {
             .rs1_out = 0,
         };
 
-        return &receiver;
+        return receiver;
     }
 };

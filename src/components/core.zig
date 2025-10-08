@@ -5,21 +5,21 @@ const std = @import("std");
 pub const Core = struct {
     id: u64,
     registers: [32]u8,
-    sender: ?*Sender,
-    receiver: ?*Receiver,
-    pub fn create(id: u64) *Core {
-        var core = Core{
+    sender: *Sender,
+    receiver: *Receiver,
+
+    pub fn create(allocator: std.mem.Allocator, id: u64) !*Core {
+        const core = try allocator.create(Core);
+        const sender = try Sender.create(allocator, core);
+        const receiver = try Receiver.create(allocator, sender);
+
+        core.* = Core{
             .id = id,
             .registers = [_]u8{0} ** 32,
-            .sender = null,
-            .receiver = null,
+            .sender = sender,
+            .receiver = receiver,
         };
 
-        const sender = Sender.create(&core);
-        const receiver = Receiver.create(sender);
-        core.sender = sender;
-        core.receiver = receiver;
-
-        return &core;
+        return core;
     }
 };

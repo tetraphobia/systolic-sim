@@ -1,3 +1,4 @@
+const std = @import("std");
 const Core = @import("core.zig").Core;
 const Receiver = @import("receiver.zig").Receiver;
 
@@ -15,8 +16,9 @@ pub const Sender = struct {
 
     neighbors: [4]?*Receiver,
 
-    pub fn create(core: *Core) *Sender {
-        var sender = Sender{
+    pub fn create(allocator: std.mem.Allocator, core: *Core) !*Sender {
+        const sender = try allocator.create(Sender);
+        sender.* = Sender{
             .core = core,
             .send = false,
             .rd_in = 0,
@@ -27,7 +29,7 @@ pub const Sender = struct {
             .neighbors = [4]?*Receiver{ null, null, null, null },
         };
 
-        return &sender;
+        return sender;
     }
 
     pub fn set_neighbor(self: *const Sender, i: u32, receiver: *Receiver) !void {
