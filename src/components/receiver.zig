@@ -1,0 +1,29 @@
+const std = @import("std");
+const Sender = @import("sender.zig").Sender;
+
+pub const Receiver = struct {
+    full: bool,
+    passthrough: bool,
+    // inbox: AQueueThatIWillWriteLater
+
+    rd_in: u5,
+    rs1_in: u32,
+
+    rd_out: u5,
+    rs1_out: u32,
+
+    sender: *Sender,
+    pub fn create(sender: *Sender) *Receiver {
+        var receiver = Receiver{
+            .full = false,
+            .passthrough = false,
+            .sender = sender,
+            .rd_in = 0,
+            .rs1_in = 0,
+            .rd_out = 0,
+            .rs1_out = 0,
+        };
+
+        return &receiver;
+    }
+};
