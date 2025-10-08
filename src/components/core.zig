@@ -22,4 +22,12 @@ pub const Core = struct {
 
         return core;
     }
+
+    pub fn get_hwid(self: *const Core) u64 {
+        return self.id;
+    }
+
+    pub fn to_string(self: *const Core) []const u8 {
+        return "[hwid:" + self.id + ", val:" + self.sender.rs1 + "]";
+    }
 };

@@ -28,4 +28,8 @@ pub const Receiver = struct {
 
         return receiver;
     }
+
+    pub fn get_hwid(self: *const Receiver) u64 {
+        return self.sender.core.id;
+    }
 };
