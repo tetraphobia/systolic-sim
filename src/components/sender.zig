@@ -51,6 +51,11 @@ pub const Sender = struct {
     /// Calculates the next jump given the target cpu and neighbors
     pub fn next_hop(self: *const Sender) u8 {
         _ = self;
+
+        // The next hop is the shortest path to column alignment.
+
+        // If we're on the same column, the next hop is the shortest path to row alignment.
+
         return 0;
     }
 
@@ -123,8 +128,22 @@ test "next_hop (neighbors: [8, 13, 0, 15], target: 7)" {
 }
 
 test "next_hop (neighbors: [11, 12, 3, 14], target: 7)" {
-    const core: *Core = try init_test_core(12);
+    const core: *Core = try init_test_core(15);
     set_neighbor_ids(core, [4]u64{ 11, 12, 3, 14 });
+
+    // Set args for next hop
+    var sender: *Sender = core.sender;
+    sender.rd = 0;
+    sender.rs1 = 1; // Value
+    sender.rs2 = 7; // CPU target
+    const expected: u16 = 11;
+    const actual = sender.next_hop();
+    try expect(expected == actual);
+}
+
+test "next_hop (neighbors: [6, 11, 14, 9], target: 7)" {
+    const core: *Core = try init_test_core(10);
+    set_neighbor_ids(core, [4]u64{ 6, 11, 14, 9 });
 
     // Set args for next hop
     var sender: *Sender = core.sender;
