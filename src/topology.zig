@@ -3,10 +3,10 @@ const Core = @import("components/core.zig").Core;
 
 pub const Topology = struct {
     cores: []*Core,
-    num_rows: u64,
-    num_cores: u64,
+    num_rows: u8,
+    num_cores: u8,
 
-    pub fn init(allocator: std.mem.Allocator, num_rows: u64) !*Topology {
+    pub fn init(allocator: std.mem.Allocator, num_rows: u8) !*Topology {
         const num_cores = num_rows * num_rows;
 
         var cores = try allocator.alloc(*Core, num_cores);
@@ -26,7 +26,7 @@ pub const Topology = struct {
         return topology;
     }
 
-    pub fn get_core(self: *const Topology, i: u64) ?*Core {
+    pub fn get_core(self: *const Topology, i: u8) ?*Core {
         if (i >= self.cores.len) return null;
         return self.cores[i];
     }

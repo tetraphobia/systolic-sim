@@ -3,12 +3,12 @@ const Receiver = @import("receiver.zig").Receiver;
 const std = @import("std");
 
 pub const Core = struct {
-    id: u64,
+    id: u8,
     registers: [32]u8,
     sender: *Sender,
     receiver: *Receiver,
 
-    pub fn create(allocator: std.mem.Allocator, id: u64) !*Core {
+    pub fn create(allocator: std.mem.Allocator, id: u8) !*Core {
         const core = try allocator.create(Core);
         const sender = try Sender.create(allocator, core);
         const receiver = try Receiver.create(allocator, sender);
@@ -23,7 +23,7 @@ pub const Core = struct {
         return core;
     }
 
-    pub fn get_hwid(self: *const Core) u64 {
+    pub fn get_hwid(self: *const Core) u8 {
         return self.id;
     }
 

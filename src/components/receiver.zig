@@ -7,10 +7,10 @@ pub const Receiver = struct {
     // inbox: AQueueThatIWillWriteLater
 
     rd_in: u5,
-    rs1_in: u32,
+    rs1_in: u8,
 
     rd_out: u5,
-    rs1_out: u32,
+    rs1_out: u8,
 
     sender: *Sender,
     pub fn create(allocator: std.mem.Allocator, sender: *Sender) !*Receiver {
@@ -29,7 +29,7 @@ pub const Receiver = struct {
         return receiver;
     }
 
-    pub fn get_hwid(self: *const Receiver) u64 {
+    pub fn get_hwid(self: *const Receiver) u8 {
         return self.sender.core.id;
     }
 };
